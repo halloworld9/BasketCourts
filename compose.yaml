@@ -1,0 +1,38 @@
+networks:
+  ms-network:
+    name: ms-network
+    driver: bridge
+
+
+services:
+  admin:
+    image: "halloworld9/basket-courts-server-admin"
+    networks:
+      - ms-network
+    ports:
+      - "8761:8761"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://admin:8761/eureka
+      SPRING_BOOT_ADMIN_CLIENT_URL: http://admin:8761/admin
+
+  app:
+    image: "halloworld9/basket-courts-app:latest"
+    networks:
+      - ms-network
+    ports:
+      - "8080:8080"
+    depends_on:
+      - admin
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://admin:8761/eureka
+      SPRING_BOOT_ADMIN_CLIENT_URL: http://admin:8761/admin
+
+  #auth:
+  #  image: "halloworld9/basket-courts-auth-server"
+  #  ports:
+  #    - "9000:9000"
+  #review:
+  #  image: "halloworld9/basket-courts-review-service"
+  #  ports:
+  #    - "8081:8081"
+
