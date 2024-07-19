@@ -47,10 +47,11 @@ import java.util.*
 @EnableWebSecurity
 class AuthorizationServerConfig {
     @Bean
+    @Order(0)
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             authorizeHttpRequests {
-                authorize("/actuator/**", hasAuthority("ADMIN"))
+                authorize("/actuator/**", permitAll)
                 authorize("/**", authenticated)
             }
             formLogin { }
@@ -69,7 +70,7 @@ class AuthorizationServerConfig {
     fun authorizationServerSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http)
         http.getConfigurer(OAuth2AuthorizationServerConfigurer::class.java)
-            .oidc{}// Enable OpenID Connect 1.0
+            .oidc{}// Enable ID Connect 1.0
         http // Redirect to the login page when not authenticated from the
             // authorization endpoint
             .exceptionHandling { exceptions: ExceptionHandlingConfigurer<HttpSecurity?> ->
@@ -84,19 +85,6 @@ class AuthorizationServerConfig {
                     .jwt(Customizer.withDefaults())
             }
 
-        return http.build()
-    }
-
-    @Bean
-    @Order(2)
-    fun defaultSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http
-            .authorizeHttpRequests { authorize ->
-                authorize
-                    .anyRequest().authenticated()
-            } // Form login handles the redirect to the login page from the
-            // authorization server filter chain
-            .formLogin(Customizer.withDefaults())
         return http.build()
     }
 
