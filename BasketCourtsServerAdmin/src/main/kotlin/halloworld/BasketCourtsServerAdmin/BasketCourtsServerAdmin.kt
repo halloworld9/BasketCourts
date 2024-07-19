@@ -1,4 +1,4 @@
-package halloworld.BasketCourtsServiceRegister
+package halloworld.BasketCourtsServerAdmin
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -8,8 +8,8 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer
 @SpringBootApplication
 @EnableEurekaServer
 @EnableAdminServer
-class BasketCourtsServiceRegisterApplication
+class BasketCourtsServerAdmin
 
 fun main(args: Array<String>) {
-	runApplication<BasketCourtsServiceRegisterApplication>(*args)
+	runApplication<BasketCourtsServerAdmin>(*args)
 }

@@ -1,0 +1,25 @@
+spring:
+  boot:
+    admin:
+      context-path: /admin
+      client:
+        url: http://admin:${server.port}/admin
+  application:
+    name: BasketCourtsAdminServer
+
+server:
+  port: 8761
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include=*:
+

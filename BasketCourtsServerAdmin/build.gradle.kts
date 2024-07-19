@@ -3,7 +3,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.5"
 	kotlin("jvm") version "1.9.24"
 	kotlin("plugin.spring") version "1.9.24"
-	id("com.google.cloud.tools.jib") version "3.4.3"
+	id("com.google.cloud.tools.jib") version "3.3.2"
 }
 
 group = "halloworld"
@@ -54,6 +54,6 @@ tasks.withType<Test> {
 
 jib {
 	to {
-		image = "halloworld9/server-admin"
+		image = "halloworld9/basket-courts-server-admin"
 	}
 }
