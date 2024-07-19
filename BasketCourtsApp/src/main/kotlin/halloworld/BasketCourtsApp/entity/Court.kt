@@ -2,22 +2,33 @@ package halloworld.BasketCourtsApp.entity
 
 import halloworld.BasketCourtsApp.entity.enums.SurfaceType
 import jakarta.persistence.*
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
+
 @Entity
-open class Court(
+class Court(
 
     @OneToOne(fetch = FetchType.EAGER)
-    open var address: Address,
+    var address: Address,
+
+    @Column(nullable = false)
+    var surface: SurfaceType,
 
     @Column
-    open var surface: SurfaceType,
+    @Min(0)
+    @Max(350)
+     var height: Int = 0,
 
-    @Column
-    open var height: Int = 0,
+    @Column(name = "count_rims")
+     var countRims: Int = 0,
+
+    @OneToMany(fetch = FetchType.EAGER)
+     var names: Set<CourtName> = emptySet(),
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    open var id: Long? = null,
+     var id: Long? = null,
 ) {
 
 
