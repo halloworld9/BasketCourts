@@ -27,4 +27,6 @@ interface CourtRepository : JpaRepository<Court, Long> {
     fun getCourtsByCity(city: String): Set<Court>
 
 
+    @Query("select c from Court c where c.address.city = ?1 and c.address.street = ?2 and c.address.number = ?3")
+    fun getByAddress(city: String, street: String, number: String): Court
 }
