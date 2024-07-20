@@ -15,25 +15,25 @@ class CourtReview(
     var courtId: Long,
 
     @Column(nullable = false)
-    @field:Min(1)
-    @field:Max(5)
+    @field:Min(1, message = "rating can't be less than 1")
+    @field:Max(5, message = "rating can't be greater than 5")
     var surface: Int,
 
     @Column(nullable = false)
-    @field:Min(1)
-    @field:Max(5)
+    @field:Min(1, message = "rating can't be less than 1")
+    @field:Max(5, message = "rating can't be greater than 5")
     var hoop: Int,
 
     @Column(name = "overall_impression", nullable = false)
-    @field:Min(1)
-    @field:Max(5)
+    @field:Min(1, message = "rating can't be less than 1")
+    @field:Max(5, message = "rating can't be greater than 5")
     var overallImpression: Int,
 
     @Column
     var review: String = "",
 
     @Id
-    @field:Null
+    @field:Null(message = "You can't set id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     var id: Long? = null

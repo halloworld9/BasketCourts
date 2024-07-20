@@ -43,11 +43,12 @@ class CourtReviewService(
         }
     }
 
-
+    @Transactional
     fun removeCourtReviewByUserIdAndCourtId(userId: Long, courtId: Long): Int {
         return courtReviewRepository.removeByUserIdAndCourtId(userId, courtId)
     }
 
+    @Transactional
     fun removeCourtReviewById(id: Long): Int {
         return courtReviewRepository.removeById(id)
     }

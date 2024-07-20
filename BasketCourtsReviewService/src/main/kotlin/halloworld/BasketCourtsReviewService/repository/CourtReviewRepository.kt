@@ -1,14 +1,10 @@
 package halloworld.BasketCourtsReviewService.repository;
 
 import halloworld.BasketCourtsReviewService.entity.CourtReview
-import jakarta.validation.constraints.Max
-import jakarta.validation.constraints.Min
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface CourtReviewRepository : JpaRepository<CourtReview, Long> {
