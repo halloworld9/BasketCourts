@@ -2,23 +2,26 @@ package halloworld.BasketCourtsApp.entity
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Null
 
 @Entity
 @Table(uniqueConstraints = [UniqueConstraint(columnNames = ["city", "street", "number"])])
  class Address(
     @Column(nullable = false)
-    @NotBlank
+    @field:NotBlank(message = "City cannot be blank")
      var city: String,
 
     @Column(nullable = false)
-    @NotBlank
+    @field:NotBlank(message = "Street cannot be blank")
      var street: String,
 
     @Column
+    @field:NotBlank(message = "Number cannot be blank")
      var number: String,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-     var id: Long? = null
+    @Null(message = "You can't set address id")
+    @Column(name = "id", nullable = false, unique = true)
+    var id: Long? = null
 )
