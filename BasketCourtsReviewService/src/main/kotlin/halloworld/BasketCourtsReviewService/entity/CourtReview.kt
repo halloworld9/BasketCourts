@@ -3,6 +3,7 @@ package halloworld.BasketCourtsReviewService.entity
 import jakarta.persistence.*
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
+import jakarta.validation.constraints.Null
 
 @Entity
 @Table(uniqueConstraints = [UniqueConstraint(columnNames = ["user_id", "court_id"])])
@@ -14,25 +15,28 @@ class CourtReview(
     var courtId: Long,
 
     @Column(nullable = false)
-    @Min(1)
-    @Max(5)
+    @field:Min(1)
+    @field:Max(5)
     var surface: Int,
 
     @Column(nullable = false)
-    @Min(1)
-    @Max(5)
+    @field:Min(1)
+    @field:Max(5)
     var hoop: Int,
 
     @Column(name = "overall_impression", nullable = false)
-    @Min(1)
-    @Max(5)
+    @field:Min(1)
+    @field:Max(5)
     var overallImpression: Int,
 
     @Column
     var review: String = "",
 
     @Id
+    @field:Null
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     var id: Long? = null
-)
+) {
+
+}
