@@ -6,7 +6,7 @@ networks:
 
 services:
   admin:
-    image: "halloworld9/basket-courts-server-admin"
+    image: "halloworld9/admin-service"
     networks:
       - ms-network
     ports:
@@ -16,7 +16,7 @@ services:
       SPRING_BOOT_ADMIN_CLIENT_URL: http://admin:8761/admin
 
   app:
-    image: "halloworld9/basket-courts-app:latest"
+    image: "halloworld9/courts-service:latest"
     networks:
       - ms-network
     ports:
@@ -26,6 +26,18 @@ services:
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://admin:8761/eureka
       SPRING_BOOT_ADMIN_CLIENT_URL: http://admin:8761/admin
+
+  postgres:
+    image: postgres:16.3
+    environment:
+      POSTGRES_DB: "basket_courts"
+      POSTGRES_USER: "spring"
+      POSTGRES_PASSWORD: "123"
+    ports:
+      - 5432:5432
+    volumes:
+      - .:/db.ddl
+      - basket_courts-data:/var/lib/postgresql/data
 
   #auth:
   #  image: "halloworld9/basket-courts-auth-server"

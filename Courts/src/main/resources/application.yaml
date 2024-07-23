@@ -1,0 +1,31 @@
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+spring:
+  application:
+    name: BasketCourtsApp
+  datasource:
+    url: jdbc:postgresql://localhost:5432/basket_courts
+    username: spring
+    password: 123
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+eureka:
+  client:
+    enabled: false
+
+server:
+  port: 3000
