@@ -1,4 +1,4 @@
-package halloworld.Visit
+package halloworld.visit
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

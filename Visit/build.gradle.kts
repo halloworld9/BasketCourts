@@ -6,6 +6,7 @@ plugins {
     kotlin("plugin.spring") version "1.9.24"
     id("com.google.cloud.tools.jib") version "3.3.2"
 }
+extra["springBootAdminVersion"] = "3.2.3"
 
 group = "halloworld"
 version = "0.0.1-SNAPSHOT"
@@ -22,15 +23,21 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("de.codecentric:spring-boot-admin-starter-client")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    runtimeOnly("org.postgresql:postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+dependencyManagement {
+    imports {
+        mavenBom("de.codecentric:spring-boot-admin-dependencies:${property("springBootAdminVersion")}")
+    }
 }
 
 kotlin {
@@ -41,4 +48,10 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+jib {
+    to {
+        image = "halloworld9/visit-service"
+    }
 }
