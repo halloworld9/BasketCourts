@@ -1,0 +1,72 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+
+spring:
+  mvc:
+    log-request-details: true
+  cloud:
+    gateway:
+      routes:
+        - id: court
+          uri: http://localhost:3000
+          predicates:
+            - Path=/court/**
+          filters:
+            - RewritePath=/court/?(?<segment>.*), /$\{segment}
+            - TokenRelay=
+            - RemoveRequestHeader=Cookie
+        - id: visit
+          uri: {VISIT-URI}
+          predicates:
+            - Path=/visit/**
+          filters:
+            - RewritePath=/visit/?(?<segment>.*), /$\{segment}
+            - TokenRelay=
+            - RemoveRequestHeader=Cookie
+        - id: review
+          uri: localhost:3000
+          predicates:
+            - Path=/review/**
+          filters:
+            - RewritePath=/review/?(?<segment>.*), /$\{segment}
+            - TokenRelay=
+            - RemoveRequestHeader=Cookie
+  security:
+    oauth2:
+      client:
+        registration:
+          gateway:
+            provider: spring
+            client-id: gateway
+            client-secret: secret
+            authorization-grant-type:
+              - "authorization_code"
+              - "refresh_token"
+            redirect-uri: "{HOST-URL}/login/oauth2/code/{registrationId}"
+            scope: openid
+        provider:
+          spring:
+            issuer-uri: {ISSUER-URI}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,refresh"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
