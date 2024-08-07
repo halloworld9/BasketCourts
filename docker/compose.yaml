@@ -1,0 +1,103 @@
+networks:
+  backend:
+    name: backend
+    driver: bridge
+
+
+services:
+  #admin:
+  #  image: "halloworld9/admin-service"
+  #  networks:
+  #    - ms-network
+  #  ports:
+  #    - "8761:8761"
+  #  environment:
+  #    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://admin:8761/eureka
+  #    SPRING_BOOT_ADMIN_CLIENT_URL: http://admin:8761/admin
+
+  database:
+    image: postgres:16.3
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: "basket_courts"
+      POSTGRES_USER: "spring"
+      POSTGRES_PASSWORD: "123"
+    networks:
+      - backend
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./basket_courts-data:/var/lib/postgresql/data
+  gateway:
+    image: "halloworld9/gateway-service:latest"
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    depends_on:
+      auth:
+        condition: service_healthy
+        restart: true
+      court:
+        condition: service_healthy
+        restart: true
+    environment:
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SPRING_ISSUER-URI: http://auth:9000
+      ISSUER-URI: http://auth:9000
+      COURT-URI: http://court:3000
+      #VISIT-URI: http://visit:3001
+
+  court:
+    image: "halloworld9/courts-service:latest"
+    networks:
+      - backend
+    depends_on:
+      auth:
+        condition: service_healthy
+        restart: true
+
+    healthcheck:
+      test: "curl --fail --silent localhost:3000/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+    environment:
+      ISSUER-URI: http://auth:9000
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/basket_courts
+      SPRING_DATASOURCE_USERNAME: spring
+      SPRING_DATASOURCE_PASSWORD: 123
+  auth:
+    image: "halloworld9/auth-server-service:latest"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+       - backend
+    ports:
+      - "9000:9000"
+    depends_on:
+      database:
+        condition: service_healthy
+        restart: true
+  review:
+    image: "halloworld9/review-service:latest"
+    networks:
+      - backend
+    depends_on:
+      auth:
+        condition: service_healthy
+        restart: true

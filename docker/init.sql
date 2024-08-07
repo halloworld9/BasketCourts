@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS address
 (
     id       bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     city     varchar(255) NOT NULL,
-    number   varchar(255),
     street   varchar(255) NOT NULL,
+    number   varchar(255),
     court_id bigint UNIQUE,
     UNIQUE (city, street, number)
 );
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS users
 (
     id            bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     email         varchar(255) UNIQUE,
-    username      varchar(255) NOT NULL UNIQUE,
+    name      varchar(30) NOT NULL UNIQUE,
     password      varchar(255) NOT NULL,
     role          role         NOT NULL,
     register_date timestamp DEFAULT NOW()
@@ -71,3 +71,12 @@ CREATE TABLE IF NOT EXISTS court_review
     UNIQUE (user_id, court_id)
 );
 
+CREATE TABLE IF NOT EXISTS visit
+(
+    id      bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    date    date NOT NULL ,
+    time    time not NULL ,
+    user_id bigint NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    court_id bigint not null REFERENCES court (id) on DELETE CASCADE,
+    UNIQUE (date, time, user_id)
+);
