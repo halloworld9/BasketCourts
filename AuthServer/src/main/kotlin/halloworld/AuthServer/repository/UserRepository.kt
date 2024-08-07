@@ -18,6 +18,6 @@ interface UserRepository: JpaRepository<User, Long> {
     fun findByEmail(email: String): Optional<User>
 
 
-    @Query("select u from User u where upper(u.username) = upper(?1)")
+    @Query("select u from User u where upper(u.name) = upper(?1)")
     fun findByUsername(username: String): Optional<User>
 }
