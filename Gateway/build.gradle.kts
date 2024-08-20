@@ -5,6 +5,7 @@ plugins {
 	kotlin("plugin.spring") version "1.9.24"
 	id("com.google.cloud.tools.jib") version "3.3.2"
 }
+val springCloudVersion by extra("2023.0.3")
 
 group = "halloworld"
 version = "0.0.1-SNAPSHOT"
@@ -19,27 +20,26 @@ repositories {
 	mavenCentral()
 }
 
-extra["springCloudVersion"] = "2023.0.3"
-
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.springframework.cloud:spring-cloud-function-context")
-	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	testImplementation("io.projectreactor:reactor-test")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
-
 dependencyManagement {
 	imports {
-		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
 	}
 }
+
 
 kotlin {
 	compilerOptions {

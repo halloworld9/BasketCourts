@@ -15,7 +15,7 @@ spring:
     gateway:
       routes:
         - id: court
-          uri: http://localhost:3000
+          uri: ${COURT_URL}
           predicates:
             - Path=/court/**
           filters:
@@ -23,7 +23,7 @@ spring:
             - TokenRelay=
             - RemoveRequestHeader=Cookie
         - id: visit
-          uri: {VISIT-URI}
+          uri: ${VISIT_URL}
           predicates:
             - Path=/visit/**
           filters:
@@ -31,7 +31,7 @@ spring:
             - TokenRelay=
             - RemoveRequestHeader=Cookie
         - id: review
-          uri: localhost:3000
+          uri: ${REVIEW_URL}
           predicates:
             - Path=/review/**
           filters:
@@ -49,11 +49,11 @@ spring:
             authorization-grant-type:
               - "authorization_code"
               - "refresh_token"
-            redirect-uri: "{HOST-URL}/login/oauth2/code/{registrationId}"
+            redirect-uri: "${GATEWAY_URL}/login/oauth2/code/{registrationId}"
             scope: openid
         provider:
           spring:
-            issuer-uri: {ISSUER-URI}
+            issuer-uri: ${ISSUER_URI}
 
 
 management:
