@@ -21,12 +21,12 @@ interface VisitRepository : JpaRepository<Visit, Long> {
     fun findVisitsByUserId(userId: Long): List<Visit>
 
     @Modifying
-    @Query("delete from Visit v where v.id = :id")
-    fun deleteVisitById(id: Long): Int
+    @Query("delete from Visit v where v.id = :id and v.userId = :userId")
+    fun deleteVisitById(id: Long, userId: Long): Int
 
     fun countVisitsByCourtIdAndDate(courtId: Long, date: LocalDate): Int
 
     @Modifying
-    @Query("update Visit v set v.time = :time where v.id = :id")
-    fun updateVisitTimeById(time: LocalTime, id: Long): Int
+    @Query("update Visit v set v.time = :time where v.id = :id and v.userId = :userId")
+    fun updateVisitTimeById(time: LocalTime, id: Long, userId: Long): Int
 }

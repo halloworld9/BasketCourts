@@ -28,8 +28,8 @@ class VisitService(private val visitRepository: VisitRepository) {
     }
 
     @Transactional
-    fun deleteVisit(visitId: Long): Int {
-        return visitRepository.deleteVisitById(visitId)
+    fun deleteVisit(visitId: Long, userId: Long): Int {
+        return visitRepository.deleteVisitById(visitId, userId)
     }
 
     @Transactional
@@ -38,8 +38,8 @@ class VisitService(private val visitRepository: VisitRepository) {
     }
 
     @Transactional
-    fun updateVisitTimeById(time: LocalTime, id: Long): Int {
-        return visitRepository.updateVisitTimeById(time, id)
+    fun updateVisitTimeById(time: LocalTime, id: Long, userId: Long): Int {
+        return visitRepository.updateVisitTimeById(time, id, userId)
     }
 
 }

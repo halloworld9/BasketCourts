@@ -3,7 +3,8 @@ package halloworld.visit.conroller
 import halloworld.visit.entity.Visit
 import halloworld.visit.service.VisitService
 import jakarta.validation.Valid
-import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -15,11 +16,6 @@ import java.time.LocalTime
 
 @RestController
 class VisitController(private val visitService: VisitService) {
-
-    @GetMapping("/test")
-    fun test(): String {
-        return "asd"
-    }
 
     @GetMapping("/court", params = ["date", "courtId"])
     fun getCourtVisitsOnDay(@RequestBody date: LocalDate, @RequestBody courtId: Long): List<Visit> {
@@ -36,23 +32,32 @@ class VisitController(private val visitService: VisitService) {
         return visitService.getUserVisits(userId)
     }
 
+    @GetMapping("/me")
+    fun getMyVisits(@AuthenticationPrincipal principal: Jwt): List<Visit> {
+        return visitService.getUserVisits(principal.claims["id"] as Long)
+    }
+
+
     @GetMapping("/user/court")
     fun getUserCourtVisits(@RequestBody courtId: Long, @RequestBody userId: Long): List<Visit> {
         return visitService.getUserCourtVisits(courtId, userId)
     }
 
     @DeleteMapping("/visit")
-    fun deleteVisit(@RequestBody visitId: Long): Int {
-        return visitService.deleteVisit(visitId)
+    fun deleteVisit(@RequestBody visitId: Long, @AuthenticationPrincipal principal: Jwt): Int {
+        val userId = principal.claims["id"] as Long
+        return visitService.deleteVisit(visitId, userId)
     }
 
     @PostMapping("/visit")
-    fun addVisit(@RequestBody @Valid visit: Visit) {
+    fun addVisit(@RequestBody @Valid visit: Visit, @AuthenticationPrincipal principal: Jwt) {
+        visit.userId = principal.claims["id"] as Long
         visitService.addVisit(visit)
     }
 
     @PutMapping("/visit")
-    fun updateVisitTime(@RequestBody time: LocalTime, @RequestBody id: Long): Int {
-        return visitService.updateVisitTimeById(time, id)
+    fun updateVisitTime(@RequestBody time: LocalTime, @RequestBody id: Long, @AuthenticationPrincipal principal: Jwt): Int {
+        val userId = principal.claims["id"] as Long
+        return visitService.updateVisitTimeById(time, id, userId)
     }
 }
