@@ -3,6 +3,8 @@ package halloworld.BasketCourtsReviewService.controller
 import halloworld.BasketCourtsReviewService.entity.CourtReview
 import halloworld.BasketCourtsReviewService.service.CourtReviewService
 import jakarta.validation.Valid
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -10,34 +12,31 @@ class CourtReviewController(
     private val courtReviewService: CourtReviewService
 ) {
 
-    @GetMapping("/user-reviews")
-    fun getUserReviews(userId: Long): List<CourtReview> {
+    @GetMapping("/court", params = ["userId"])
+    fun getUserReviews(@RequestBody userId: Long): List<CourtReview> {
         return courtReviewService.getUserReviews(userId)
     }
 
-    @GetMapping("/court-reviews")
-    fun getCourtReviews(courtId: Long): List<CourtReview> {
+    @GetMapping("/court", params = ["courtId"])
+    fun getCourtReviews(@RequestBody courtId: Long): List<CourtReview> {
         return courtReviewService.getCourtsReviews(courtId)
     }
 
-    @PostMapping("/court-review")
-    fun addCourtReview(@Valid @RequestBody courtReview: CourtReview): CourtReview {
+    @PostMapping("/court")
+    fun addCourtReview(@Valid @RequestBody courtReview: CourtReview, @AuthenticationPrincipal principal: Jwt): CourtReview {
+        courtReview.userId = principal.claims["id"] as Long
         return courtReviewService.addCourtReview(courtReview)
     }
 
-    @PutMapping("/court-review")
-    fun updateCourtReview(@Valid @RequestBody courtReview: CourtReview): CourtReview {
+    @PutMapping("/court")
+    fun updateCourtReview(@Valid @RequestBody courtReview: CourtReview, @AuthenticationPrincipal principal: Jwt): CourtReview {
+        courtReview.userId = principal.claims["id"] as Long
         return courtReviewService.updateCourtReview(courtReview)
     }
 
-    @DeleteMapping("/remove-court-review", params = ["userId", "courtId"])
-    fun removeCourtReview(userId: Long, courtId: Long): Int {
+    @DeleteMapping("/court", params = ["userId", "courtId"])
+    fun removeCourtReview(@RequestBody courtId: Long, @AuthenticationPrincipal principal: Jwt): Int {
+        val userId = principal.claims["id"] as Long
         return courtReviewService.removeCourtReviewByUserIdAndCourtId(userId, courtId)
     }
-
-    @DeleteMapping("/remove-court-review", params = ["id"])
-    fun removeCourtReview(id: Long): Int {
-        return courtReviewService.removeCourtReviewById(id)
-    }
-
 }

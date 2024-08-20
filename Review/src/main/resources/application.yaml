@@ -7,16 +7,26 @@ management:
       exposure:
         include: '*'
 spring:
-  application:
-    name: BasketCourtsReviewService
   datasource:
-    driverClassName: org.h2.Driver
-    url: jdbc:h2:mem:testdb
-    username: sa
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI}
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database: postgresql
     hibernate:
-      ddl-auto: create-only
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 eureka:
   client:
     enabled: false
+
+server:
+  port: 3002

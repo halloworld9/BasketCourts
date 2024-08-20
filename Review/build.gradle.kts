@@ -21,8 +21,7 @@ extra["springBootAdminVersion"] = "3.3.2"
 extra["springCloudVersion"] = "2023.0.2"
 
 dependencies {
-	runtimeOnly("com.h2database:h2")
-
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("org.springframework.boot:spring-boot-devtools")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")

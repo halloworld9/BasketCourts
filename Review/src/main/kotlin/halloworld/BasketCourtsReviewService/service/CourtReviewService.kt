@@ -34,7 +34,7 @@ class CourtReviewService(
                 hoop,
                 overallImpression,
                 review,
-                userId,
+                userId!!,
                 courtId
             )
         }

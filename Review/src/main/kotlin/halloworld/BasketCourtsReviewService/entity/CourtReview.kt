@@ -9,7 +9,8 @@ import jakarta.validation.constraints.Null
 @Table(name = "court_review", uniqueConstraints = [UniqueConstraint(columnNames = ["user_id", "court_id"])])
 class CourtReview(
     @Column(name = "user_id", nullable = false)
-    var userId: Long,
+    @Null
+    var userId: Long? = null,
 
     @Column(name = "court_id", nullable = false)
     var courtId: Long,
