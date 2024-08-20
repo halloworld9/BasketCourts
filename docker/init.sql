@@ -19,7 +19,6 @@ $$
 $$;
 
 
-
 CREATE TABLE IF NOT EXISTS court
 (
     id         bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -80,3 +79,6 @@ CREATE TABLE IF NOT EXISTS visit
     court_id bigint not null REFERENCES court (id) on DELETE CASCADE,
     UNIQUE (date, time, user_id)
 );
+
+CREATE CAST (varchar AS surface_type) WITH INOUT AS ASSIGNMENT;
+CREATE CAST (varchar AS role) WITH INOUT AS ASSIGNMENT;
