@@ -4,20 +4,21 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
+import org.hibernate.annotations.ColumnTransformer
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
 
 @Entity
 @Table(name = "users")
-class User (
+open class User (
     @Column(unique = true)
     @field:Email
-    var email: String,
+    open var email: String,
 
     @Column(unique = true)
     @field:NotBlank
-    var name: String,
+    open var name: String,
 
     @Column
     @field:Size(min = 5, max = 255)
@@ -25,31 +26,31 @@ class User (
 
     @Column(updatable = false, name = "register_date")
     @Temporal(TemporalType.TIMESTAMP)
-    var registerDate: Date,
+    open var registerDate: Date,
 
-    @Column
-    var role: Role = Role.USER,
+    @Column(nullable = false)
+    open var role: Role,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    var id: Long? = null
+    open var id: Long? = null
 
 
 ) : UserDetails {
-    override fun getAuthorities(): Set<Role> {
+    open override fun getAuthorities(): Set<Role> {
         return setOf(role)
     }
 
-    override fun getPassword(): String {
+    open override fun getPassword(): String {
         return password
     }
 
-    fun setPassword(password: String) {
+    open fun setPassword(password: String) {
         this.password = password
     }
 
-    override fun getUsername(): String {
+    open override fun getUsername(): String {
         return email
     }
 }

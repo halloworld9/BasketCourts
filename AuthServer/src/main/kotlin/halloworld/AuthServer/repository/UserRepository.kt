@@ -20,4 +20,7 @@ interface UserRepository: JpaRepository<User, Long> {
 
     @Query("select u from User u where upper(u.name) = upper(?1)")
     fun findByUsername(username: String): Optional<User>
+
+
+
 }

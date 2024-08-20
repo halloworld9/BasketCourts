@@ -1,5 +1,6 @@
 server:
   port: 9000
+
 management:
   endpoints:
     web:
@@ -17,19 +18,18 @@ management:
 
 spring:
   datasource:
-    username: sa
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-  application:
-    name: BasketCourtsAuthServer
-  boot:
-    admin:
-      client:
-        url: http://localhost:8761/admin
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    database: postgresql
     hibernate:
-      ddl-auto: create-only
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 
 

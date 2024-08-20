@@ -20,7 +20,6 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.config.annotation.web.invoke
-import org.springframework.security.crypto.password.NoOpPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod
@@ -44,6 +43,7 @@ import java.security.KeyPairGenerator
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.util.*
+import kotlin.math.log
 
 
 @EnableWebSecurity
@@ -55,8 +55,7 @@ class SecurityConfig {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http)
         http.getConfigurer(OAuth2AuthorizationServerConfigurer::class.java)
             .oidc(Customizer.withDefaults()) // Enable OpenID Connect 1.0
-        http // Redirect to the login page when not authenticated from the
-            // authorization endpoint
+        http
             .exceptionHandling { exceptions: ExceptionHandlingConfigurer<HttpSecurity?> ->
                 exceptions
                     .defaultAuthenticationEntryPointFor(
@@ -79,8 +78,7 @@ class SecurityConfig {
             authorizeHttpRequests {
                 authorize(anyRequest, permitAll)
             }
-            formLogin {
-            }
+            formLogin {}
         }
 
         return http.build()
@@ -94,7 +92,7 @@ class SecurityConfig {
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .redirectUri("http://127.0.0.1:8080/login/oauth2/code/gateway")
+            .redirectUri("http://localhost:8080/login/oauth2/code/gateway")
             .scope(OidcScopes.OPENID)
             .build()
         return InMemoryRegisteredClientRepository(oidcClient)
