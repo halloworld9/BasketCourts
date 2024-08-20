@@ -15,17 +15,15 @@ management:
 
 
 spring:
-  application:
-    name: BasketCourtsApp
   datasource:
-    url: jdbc:postgresql://localhost:5432/basket_courts
-    username: spring
-    password: 123
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9000
+          issuer-uri: ${ISSUER_URI}
   jpa:
     database: postgresql
     hibernate:

@@ -2,6 +2,7 @@ package halloworld.Courts.service
 
 import halloworld.Courts.entity.Address
 import halloworld.Courts.entity.Court
+import halloworld.Courts.entity.enums.SurfaceType
 import halloworld.Courts.repository.CourtRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -10,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional
 class CourtService(
     private val courtRepository: CourtRepository,
 ) {
-
     fun getCourtsByCity(city: String): Set<Court> {
         return courtRepository.getCourtsByCity(city)
     }

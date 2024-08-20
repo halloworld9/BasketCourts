@@ -15,6 +15,7 @@ class SecurityConfig {
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             authorizeHttpRequests {
+                authorize("/test", authenticated)
                 authorize(anyRequest, permitAll)
             }
             oauth2ResourceServer {

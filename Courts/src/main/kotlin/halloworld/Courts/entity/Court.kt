@@ -14,7 +14,6 @@ class Court(
     var address: Address,
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     var surface: SurfaceType,
 
     @Column
