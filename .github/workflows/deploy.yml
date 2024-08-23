@@ -7,6 +7,9 @@ on:
 jobs:
   jib:
     runs-on: ubuntu-latest
+    environment:
+      name: runner
+      url: https://github.com
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
@@ -18,5 +21,7 @@ jobs:
       - name: setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: run jib
-        run: echo ${{env.TEST}}
+        run: echo asd ${{env.TEST}}|
+          echo ddd ${{ vars.TEST }}
+
 
