@@ -18,5 +18,4 @@ jobs:
       - name: setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: run jib
-        run: gradle jib -Djib.to.auth.username=${{secrets.DOCKER_LOGIN}} -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
-
+        run: echo ${{secrets.DOCKER_LOGIN}}
