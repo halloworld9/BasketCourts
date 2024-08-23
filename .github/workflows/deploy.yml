@@ -18,10 +18,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      #- name: setup Gradle
-      #  uses: gradle/actions/setup-gradle@v4
+      - name: setup Gradle
+        uses: gradle/actions/setup-gradle@v4
       - name: run jib
         run: |
-          echo ddd ${{ secrets.DOCKER_LOGIN }}
+          gradle jib -Djib.to.auth.username=${{secrets.DOCKER_LOGIN}} -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
 
 
