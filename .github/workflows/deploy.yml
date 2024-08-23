@@ -18,11 +18,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+      #- name: setup Gradle
+      #  uses: gradle/actions/setup-gradle@v4
       - name: run jib
         run: |
-          echo asd ${{env.TEST}}|
-          echo ddd ${{ vars.TEST }}
+          echo ddd ${{ secrets.DOCKER_LOGIN }}
 
 
