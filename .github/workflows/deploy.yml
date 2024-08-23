@@ -8,10 +8,17 @@ jobs:
   jib:
     runs-on: ubuntu-latest
     steps:
-        - name: JIB container
-          uses: MathieuSoysal/jib-container-publish.yml@v2.1.5
-          with:
-            USERNAME: ${{ secrets.DOCKER_LOGIN }}
-            PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-            java-version: 17
-          
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - name: set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: run jib
+        run: gradle jib \
+          -Djib.to.auth.username=${{secrets.DOCKER_LOGIN}} \
+          -Djib.to.auth.password=${{secrets.DOCKER_PASSWORD}}
+
