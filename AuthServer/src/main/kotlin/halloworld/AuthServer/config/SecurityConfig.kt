@@ -54,7 +54,7 @@ class SecurityConfig {
     fun authorizationServerSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http)
         http.getConfigurer(OAuth2AuthorizationServerConfigurer::class.java)
-            .oidc(Customizer.withDefaults()) // Enable OpenID Connect 1.0
+            .oidc { } // Enable OpenID Connect 1.0
         http
             .exceptionHandling { exceptions: ExceptionHandlingConfigurer<HttpSecurity?> ->
                 exceptions
@@ -65,7 +65,7 @@ class SecurityConfig {
             } // Accept access tokens for User Info and/or Client Registration
             .oauth2ResourceServer { resourceServer: OAuth2ResourceServerConfigurer<HttpSecurity> ->
                 resourceServer
-                    .jwt {}
+                    .jwt { }
             }
 
         return http.build()
@@ -78,7 +78,11 @@ class SecurityConfig {
             authorizeHttpRequests {
                 authorize(anyRequest, permitAll)
             }
-            formLogin {}
+            csrf { }
+            cors { }
+            formLogin {
+            }
+
         }
 
         return http.build()
