@@ -18,17 +18,17 @@ class CourtReview(
     @Column(nullable = false)
     @field:Min(1, message = "rating can't be less than 1")
     @field:Max(5, message = "rating can't be greater than 5")
-    var surface: Int,
+    var surface: Byte,
 
     @Column(nullable = false)
     @field:Min(1, message = "rating can't be less than 1")
     @field:Max(5, message = "rating can't be greater than 5")
-    var hoop: Int,
+    var hoop: Byte,
 
     @Column(name = "overall_impression", nullable = false)
     @field:Min(1, message = "rating can't be less than 1")
     @field:Max(5, message = "rating can't be greater than 5")
-    var overallImpression: Int,
+    var overallImpression: Byte,
 
     @Column
     var review: String = "",
