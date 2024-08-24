@@ -15,27 +15,24 @@ spring:
     gateway:
       routes:
         - id: court
-          uri: ${COURT_URL}
+          uri: ${COURT_URI}
           predicates:
-            - Path=/court/**
+            - Path=/court, /court/{segment}
           filters:
-            - RewritePath=/court/?(?<segment>.*), /$\{segment}
             - TokenRelay=
             - RemoveRequestHeader=Cookie
         - id: visit
-          uri: ${VISIT_URL}
+          uri: ${VISIT_URI}
           predicates:
-            - Path=/visit/**
+            - Path=/visit, /visit/{segment}, /visit/{segment}/{segment}
           filters:
-            - RewritePath=/visit/?(?<segment>.*), /$\{segment}
             - TokenRelay=
             - RemoveRequestHeader=Cookie
         - id: review
-          uri: ${REVIEW_URL}
+          uri: ${REVIEW_URI}
           predicates:
-            - Path=/review/**
+            - Path=/review, /review/{segment}
           filters:
-            - RewritePath=/review/?(?<segment>.*), /$\{segment}
             - TokenRelay=
             - RemoveRequestHeader=Cookie
   security:
@@ -49,7 +46,7 @@ spring:
             authorization-grant-type:
               - "authorization_code"
               - "refresh_token"
-            redirect-uri: "${GATEWAY_URL}/login/oauth2/code/{registrationId}"
+            redirect-uri: "${GATEWAY_URI}/login/oauth2/code/{registrationId}"
             scope: openid
         provider:
           spring:
