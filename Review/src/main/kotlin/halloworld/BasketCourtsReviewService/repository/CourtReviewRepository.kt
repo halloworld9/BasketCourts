@@ -53,11 +53,11 @@ interface CourtReviewRepository : JpaRepository<CourtReview, Long> {
     where c.userId = :userId and c.courtId = :courtId"""
     )
     fun updateCourtReviewByUserIdAndCourtId(
-        surface: Int,
-        hoop: Int,
-        overallImpression: Int,
+        surface: Byte,
+        hoop: Byte,
+        overallImpression: Byte,
         review: String,
         userId: Long,
         courtId: Long
-    )
+    ) : Int
 }

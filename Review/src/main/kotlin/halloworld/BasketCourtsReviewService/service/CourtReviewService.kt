@@ -27,8 +27,8 @@ class CourtReviewService(
     }
 
     @Transactional
-    fun updateCourtReview(courtReview: CourtReview): CourtReview {
-        return courtReview.apply {
+    fun updateCourtReview(courtReview: CourtReview): Int {
+        return courtReview.run {
             courtReviewRepository.updateCourtReviewByUserIdAndCourtId(
                 surface,
                 hoop,
