@@ -14,12 +14,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 
 @RestController
 class CourtController(private val courtService: CourtService) {
 
 
-    @GetMapping("/{city}")
+    @GetMapping("/court/{city}")
     fun getCityCourts(@PathVariable city: String): Set<Court> {
         return courtService.getCourtsByCity(city)
     }
@@ -30,17 +31,17 @@ class CourtController(private val courtService: CourtService) {
     }
 
     @PostMapping("/court")
-    fun saveCourt(@Valid @RequestBody court: Court, @AuthenticationPrincipal principal: Jwt?): ResponseEntity<Court> {
+    fun saveCourt(@Valid @RequestBody court: Court, @AuthenticationPrincipal principal: Jwt?) {
         if (principal == null || principal.getClaimAsString("role") != "admin")
-            return ResponseEntity(HttpStatus.NOT_FOUND)
-        return ResponseEntity(courtService.saveCourt(court), HttpStatus.CREATED)
+            throw ResponseStatusException(HttpStatus.FORBIDDEN)
+        courtService.saveCourt(court)
+        throw ResponseStatusException(HttpStatus.CREATED)
     }
 
     @DeleteMapping("/court")
-    fun deleteCourt(id: Long, @AuthenticationPrincipal principal: Jwt?): ResponseEntity<Void> {
+    fun deleteCourt(id: Long, @AuthenticationPrincipal principal: Jwt?): Int {
         if (principal == null || principal.getClaimAsString("role") != "admin")
-            return ResponseEntity(HttpStatus.NOT_FOUND)
-        val a = courtService.deleteCourtById(id)
-        return ResponseEntity(HttpStatus.NO_CONTENT)
+            throw ResponseStatusException(HttpStatus.FORBIDDEN)
+        return courtService.deleteCourtById(id)
     }
 }
